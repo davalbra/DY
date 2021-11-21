@@ -12,8 +12,18 @@ public class ListaCircularDE<T> implements List<T> {
     CNode<T> last;
     int size = 0;
 
-    public boolean movehead() {
-
+    @Override
+    public boolean movehead(int numero) {
+        System.out.println(size);
+        System.out.println(numero);
+        if (isEmpty()||numero==0 ) {
+            System.out.println("hola");
+            return false;
+        } else if (numero > size) {
+            last = getNode(size % numero);
+        } else {
+            last = getNode(numero);
+        }
         return true;
     }
 
@@ -92,7 +102,7 @@ public class ListaCircularDE<T> implements List<T> {
             T data = last.getContent();
             last.getPrevious().setNext(last.getNext());
             last.getNext().setPrevious(last.getPrevious());
-            last=last.getPrevious();
+            last = last.getPrevious();
             size--;
             return data;
         }
