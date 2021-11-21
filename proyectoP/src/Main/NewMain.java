@@ -33,10 +33,15 @@ public class NewMain extends Application {
         letras.addLast("20");
         System.out.println(letras.removeFirst());
         System.out.println(letras.removeLast());
+        System.out.println(letras.addFirst("4"));
+        System.out.println(letras.addLast("20"));
+        letras.add(3, "2,5");
+        letras.remove(4);
+        System.out.println(letras.get(3));
+        System.out.println(letras.set(3,"2.6"));
         System.out.println("fIN DEL CODIGO");
         ListIterator<String> s = letras.listIterator();
-
-        for (int i = 0;s!=null && s.hasNext() && i < letras.size(); i++) {
+        for (int i = 0; s != null && s.hasNext() && i < letras.size(); i++) {
             String t = s.next();
             System.out.println(t);
         }

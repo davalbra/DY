@@ -64,12 +64,12 @@ public class ListaCircularDE<T> implements List<T> {
         if (isEmpty()) {
             return null;
         } else if (size == 1) {
-            T data = last.getContent();
+            T data = last.getNext().getContent();
             size--;
             last = null;
             return data;
         } else {
-            T data = last.getContent();
+            T data = last.getNext().getContent();
             last.getNext().getNext().setPrevious(last);
             last.getNext().setPrevious(null);
             last.setNext(last.getNext().getNext());
@@ -89,9 +89,10 @@ public class ListaCircularDE<T> implements List<T> {
             last = null;
             return data;
         } else {
-            T data = last.getPrevious().getContent();
+            T data = last.getContent();
             last.getPrevious().setNext(last.getNext());
             last.getNext().setPrevious(last.getPrevious());
+            last=last.getPrevious();
             size--;
             return data;
         }
