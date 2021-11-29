@@ -4,12 +4,17 @@
  * and open the template in the editor.
  */
 package Main;
+
+import Estructuras.CNode;
 import java.util.Random;
 import Estructuras.List;
 import Estructuras.ListaCircularDE;
 import java.io.IOException;
 import static java.lang.Math.random;
 import static java.lang.StrictMath.random;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.ListIterator;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -24,32 +29,26 @@ import javafx.stage.Stage;
 public class NewMain extends Application {
 
     /**
-     * @param args the command line arguments
-     * char na = (char) (r.nextInt(26) + 'a');
-            System.out.println(na);
+     * @param args the command line arguments char na = (char) (r.nextInt(26) +
+     * 'a'); System.out.println(na);
      */
     public static void main(String[] args) {
-        Random r= new Random();
-        List<String> letras = new ListaCircularDE<>();
-        letras.addFirst("1");
-        letras.addFirst("2");
-        letras.addFirst("3");
-        letras.addFirst("4");
-        letras.addLast("20");
-//        System.out.println(letras.removeFirst());
-//        System.out.println(letras.removeLast());
-//        System.out.println(letras.addFirst("4"));
-//        System.out.println(letras.addLast("20"));
-//        letras.add(3, "2,5");
-//        letras.remove(4);
-//        System.out.println(letras.get(3));
-//        System.out.println(letras.set(3,"2.6"));
-        letras.movehead(5);
-        System.out.println("fIN DEL CODIGO");
-        ListIterator<String> s = letras.listIterator();
-        for (int i = 0; s != null && s.hasNext() && i < letras.size(); i++) {
-            String t = s.next();
-            System.out.println(t);
+        LinkedList<CNode<String>> letrasnodo = new LinkedList<>();
+        Random r = new Random();
+        int dimension = 9;
+        for (int i = 0; i < dimension; i++) {
+            for (int j = 0; j < dimension; j++) {
+                letrasnodo.add(new CNode(String.valueOf(i) + String.valueOf(j), i, j));
+            }
+        }
+        int medidor = 0;
+        for (CNode<String> nod : letrasnodo) {
+
+            if (nod.getI() != medidor) {
+                medidor = nod.getI();
+                System.out.println("");
+            }
+            System.out.print(" " + nod.getI() + ":" + nod.getJ());
         }
         launch();
     }
@@ -61,11 +60,14 @@ public class NewMain extends Application {
             Scene sc = new Scene(p);
             escenario.setScene(sc);
             escenario.show();
-            escenario.close();
 
         } catch (IOException ex) {
             System.out.println("gh");
         }
+
+    }
+
+    public static void movimientoNodo(int numeroNodo, String movimiento, int cantidad) {
 
     }
 

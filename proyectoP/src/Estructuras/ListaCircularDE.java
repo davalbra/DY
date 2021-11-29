@@ -29,7 +29,7 @@ public class ListaCircularDE<T> implements List<T> {
 
     @Override
     public boolean addFirst(T data) {
-        CNode<T> newNode = new CNode(data);
+        CNode<T> newNode = new CNode(data,0,0);
         if (isEmpty()) {
             last = newNode;
         } else if (size == 1) {
@@ -49,7 +49,7 @@ public class ListaCircularDE<T> implements List<T> {
 
     @Override
     public boolean addLast(T data) {
-        CNode<T> newNode = new CNode(data);
+        CNode<T> newNode = new CNode(data,2,2);
         if (isEmpty()) {
         } else if (size == 1) {
             newNode.setNext(last);
@@ -129,7 +129,7 @@ public class ListaCircularDE<T> implements List<T> {
             addFirst(data);
         } else if (index > 0 && index < size) {
             CNode<T> aux = getNode(index);
-            CNode<T> newNode = new CNode(data);
+            CNode<T> newNode = new CNode(data,2,2);
             aux.getPrevious().setNext(newNode);
             newNode.setPrevious(aux.getPrevious());
             newNode.setNext(aux);
