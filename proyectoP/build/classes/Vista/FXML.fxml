@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
 
-<AnchorPane id="AnchorPane" fx:id="root" prefHeight="422.0" prefWidth="535.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controlador.FXMLController">
+<AnchorPane id="AnchorPane" fx:id="root" prefHeight="615.0" prefWidth="886.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controlador.FXMLController">
    <children>
-      <Pane fx:id="pane" layoutX="82.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0" />
+      <RadioButton fx:id="rbn" layoutX="699.0" layoutY="14.0" mnemonicParsing="false" text="RadioButton" />
    </children>
 </AnchorPane>

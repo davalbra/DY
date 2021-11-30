@@ -33,22 +33,14 @@ public class NewMain extends Application {
      * 'a'); System.out.println(na);
      */
     public static void main(String[] args) {
-        LinkedList<CNode<String>> letrasnodo = new LinkedList<>();
-        Random r = new Random();
-        int dimension = 9;
-        for (int i = 0; i < dimension; i++) {
-            for (int j = 0; j < dimension; j++) {
-                letrasnodo.add(new CNode(String.valueOf(i) + String.valueOf(j), i, j));
-            }
-        }
-        int medidor = 0;
-        for (CNode<String> nod : letrasnodo) {
+        ListaCircularDE<String> listap = new ListaCircularDE<>();
 
-            if (nod.getI() != medidor) {
-                medidor = nod.getI();
-                System.out.println("");
-            }
-            System.out.print(" " + nod.getI() + ":" + nod.getJ());
+        for (int i = 0; i < 9; i++) {
+            listap.addLast(""+i);
+        }
+
+        for (int i = 0; i < listap.size(); i++) {
+            //System.out.println(listap.get(i));
         }
         launch();
     }
@@ -60,6 +52,7 @@ public class NewMain extends Application {
             Scene sc = new Scene(p);
             escenario.setScene(sc);
             escenario.show();
+            //escenario.close();
 
         } catch (IOException ex) {
             System.out.println("gh");

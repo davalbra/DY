@@ -14,10 +14,10 @@ public class ListaCircularDE<T> implements List<T> {
 
     @Override
     public boolean movehead(int numero) {
-        System.out.println(size);
-        System.out.println(numero);
+        if(numero<0){
+        numero=size+numero;
+        }
         if (isEmpty()||numero==0 ) {
-            System.out.println("hola");
             return false;
         } else if (numero > size) {
             last = getNode(size % numero);
@@ -29,7 +29,7 @@ public class ListaCircularDE<T> implements List<T> {
 
     @Override
     public boolean addFirst(T data) {
-        CNode<T> newNode = new CNode(data,0,0);
+        CNode<T> newNode = new CNode(data);
         if (isEmpty()) {
             last = newNode;
         } else if (size == 1) {
@@ -49,23 +49,35 @@ public class ListaCircularDE<T> implements List<T> {
 
     @Override
     public boolean addLast(T data) {
-        CNode<T> newNode = new CNode(data,2,2);
+        CNode<T> newNode = new CNode(data);
         if (isEmpty()) {
-        } else if (size == 1) {
-            newNode.setNext(last);
-            newNode.setPrevious(last);
+            last = newNode;
             last.setNext(newNode);
             last.setPrevious(newNode);
-        } else {
-            newNode.setNext(last.getNext());
-            last.getNext().setPrevious(newNode);
-            newNode.setPrevious(last);
-            last.setNext(newNode);
-
         }
-        last = newNode;
+        newNode.setNext(last);
+        newNode.setPrevious(last.getPrevious());
+        last.getPrevious().setNext(newNode);
+        last.setPrevious(newNode);
         size++;
         return true;
+//        CNode<T> newNode = new CNode(data,2,2);
+//        if (isEmpty()) {
+//        } else if (size == 1) {
+//            newNode.setNext(last);
+//            newNode.setPrevious(last);
+//            last.setNext(newNode);
+//            last.setPrevious(newNode);
+//        } else {
+//            newNode.setNext(last.getNext());
+//            last.getNext().setPrevious(newNode);
+//            newNode.setPrevious(last);
+//            last.setNext(newNode);
+//
+//        }
+//        last = newNode;
+//        size++;
+        //return true;
 
     }
 
@@ -121,6 +133,7 @@ public class ListaCircularDE<T> implements List<T> {
     @Override
     public void clear() {
         last = null;
+        size=0;
     }
 
     @Override
@@ -129,7 +142,7 @@ public class ListaCircularDE<T> implements List<T> {
             addFirst(data);
         } else if (index > 0 && index < size) {
             CNode<T> aux = getNode(index);
-            CNode<T> newNode = new CNode(data,2,2);
+            CNode<T> newNode = new CNode(data);
             aux.getPrevious().setNext(newNode);
             newNode.setPrevious(aux.getPrevious());
             newNode.setNext(aux);
@@ -178,7 +191,7 @@ public class ListaCircularDE<T> implements List<T> {
     }
 
     private CNode<T> getNode(int index) {
-        CNode<T> aux = last.getNext();
+        CNode<T> aux = last;
         if (index <= size / 2) {
             for (; index > 0; index--) {
                 aux = aux.getNext();
