@@ -55,8 +55,8 @@ public class FXMLController implements Initializable {
     private RadioButton rbnD;
 
     static LinkedHashMap<Node, ArrayList<Integer>> mapa = new LinkedHashMap<>();
-    static int din = 5;
-    static int djn = 4;
+    static int din = 3;
+    static int djn = 2;
     static ListaCircularDE<Node> listacircular = new ListaCircularDE<Node>();
     static int offset = 5;
     static int gap = 10;
@@ -72,7 +72,6 @@ public class FXMLController implements Initializable {
         logicaDeColumnas(btnAC, person);
 
         root.setStyle("-fx-background-color: linear-gradient(to bottom, rgb(20,20,20), rgb(30,60,80));");
-        GridPane grid = new GridPane();
         Random r = new Random();
 
         for (int i = 0; i < din; i++) {
@@ -121,10 +120,7 @@ public class FXMLController implements Initializable {
 
     public void logicaDeColumnas(Button btn, Persona per) {
         btn.setOnMouseClicked((t) -> {
-            System.out.println("entro aqui");
-            System.out.println(per.getCambiosDisponibles() == per.getCambiosRealizados() && per.getCambiosDisponibles() > 0);
             if (per.getCambiosDisponibles() == per.getCambiosRealizados() && per.getCambiosDisponibles() > 0) {
-                System.out.println("entro en elbooleano");
                 per.setCambiosDisponibles();
             }
 
@@ -166,8 +162,8 @@ public class FXMLController implements Initializable {
         p.setMinSize(size, size);
         p.setOpacity(2);
         p.setStyle("-fx-border-color: white;");
-        //Label l = new Label(String.valueOf(i) + String.valueOf(j));
-        Label l = new Label(String.valueOf(letra));
+        Label l = new Label(String.valueOf(i) + String.valueOf(j));
+        //Label l = new Label(String.valueOf(letra));
         l.setTextFill(Color.WHITE);
         p.setLayoutX(posIniX(i));
         p.setLayoutY(posIniY(j));
@@ -184,22 +180,37 @@ public class FXMLController implements Initializable {
             listacircular.clear();
             PriorityQueue<Node> nodosordenados;
             if (rbn.isSelected()) {
+                if (person.getCambiosDisponibles() < person.getCambiosRealizados()) {
+                    Set<Node> keys = mapa.keySet();
+                    generaEspacio(keys, p, 0);
+                    for (Node nd : keys) {
+                        if (mapa.get(p).get(0) < mapa.get(nd).get(0)) {
+                            nd.setLayoutX(posIniX(mapa.get(nd).get(0)));
+                            mapa.get(nd).set(2, posIniX(mapa.get(nd).get(0)));
+                        }
+                    }
+                    for (int i = 0; i < djn; i++) {
+                        logistica(new Random(),mapa.get(p).get(0) + 1, i, person);
+                    }
+                    din++;
+                    person.setCambiosRealizados();
+                }
                 nodosordenados = logicaCreaListasCirculares(p, 0, 1);
             } else {
+
                 if (person.getCambiosDisponibles() < person.getCambiosRealizados()) {
-                    System.out.println("entro en el megaproceso suerte men");
                     Set<Node> keys = mapa.keySet();
+                    generaEspacio(keys, p, 1);
                     for (Node nd : keys) {
                         if (mapa.get(p).get(1) < mapa.get(nd).get(1)) {
-                            mapa.get(nd).set(1, mapa.get(nd).get(1) + 1);
+                            nd.setLayoutY(posIniY(mapa.get(nd).get(1)));
+                            mapa.get(nd).set(3, posIniY(mapa.get(nd).get(1)));
                         }
-
                     }
-                    for (Node nd : keys) {
-                        nd.setLayoutY(posIniY(mapa.get(nd).get(1)));
-                        mapa.get(nd).set(3, posIniY(mapa.get(nd).get(1)));
-
+                    for (int i = 0; i < din; i++) {
+                        logistica(new Random(), i, mapa.get(p).get(1) + 1, person);
                     }
+                    djn++;
                     person.setCambiosRealizados();
                 }
 
@@ -211,6 +222,14 @@ public class FXMLController implements Initializable {
             }
         }
         );
+    }
+
+    public void generaEspacio(Set<Node> keys, Pane p, int log) {
+        for (Node nd : keys) {
+            if (mapa.get(p).get(log) < mapa.get(nd).get(log)) {
+                mapa.get(nd).set(log, mapa.get(nd).get(log) + 1);
+            }
+        }
     }
 
     public void eventoreleased(Pane p) {
@@ -235,7 +254,6 @@ public class FXMLController implements Initializable {
     public void eventoDragged(Pane p) {
         p.setOnMouseDragged((MouseEvent t) -> {
             if (rbn.isSelected()) {
-
                 for (int k = 0; k < djn; k++) {
                     Node nd = listacircular.get(k);
                     nd.setLayoutY(-20 + mapa.get(nd).get(3) + (t.getSceneY() - mapa.get(p).get(3)));
