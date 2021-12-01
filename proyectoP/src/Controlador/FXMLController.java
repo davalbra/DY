@@ -8,15 +8,20 @@ package Controlador;
 import Estructuras.ListaCircularDE;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.ListIterator;
+import java.util.PriorityQueue;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import java.util.Random;
+import java.util.Set;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -42,7 +47,7 @@ public class FXMLController implements Initializable {
     private AnchorPane root;
     @FXML
     private RadioButton rbn;
-    static HashMap<Node, ArrayList<Integer>> mapa = new HashMap<>();
+    static LinkedHashMap<Node, ArrayList<Integer>> mapa = new LinkedHashMap<>();
     static int celdas = 9;
     static ListaCircularDE<Node> listacircular = new ListaCircularDE<Node>();
     static int offset = 5;
@@ -61,13 +66,13 @@ public class FXMLController implements Initializable {
 
         for (int i = 0; i < celdas; i++) {
             for (int j = 0; j < celdas; j++) {
-                //matriz
-                //char letra = (char) (r.nextInt(26) + 'a');
+                char letra = (char) (r.nextInt(26) + 'A');
                 Pane p = new Pane();
                 p.setMinSize(size, size);
                 p.setOpacity(2);
                 p.setStyle("-fx-border-color: white;");
-                Label l = new Label(String.valueOf(i)+String.valueOf(j));
+                //Label l = new Label(String.valueOf(i) + String.valueOf(j));
+                Label l = new Label(String.valueOf(letra));
                 l.setTextFill(Color.WHITE);
                 p.setLayoutX(posIniX(i));
                 p.setLayoutY(posIniY(j));
@@ -83,49 +88,59 @@ public class FXMLController implements Initializable {
                 lista.add(posIniY(j));
                 mapa.put(p, lista);
                 //fin
-                
+
                 //creando la logica de las listas circulates
                 p.setOnMousePressed((MouseEvent t) -> {
-                    System.out.println("i: "+mapa.get(p).get(0)+" j: "+mapa.get(p).get(1)+"  posX: "+mapa.get(p).get(2)+"  posY: "+mapa.get(p).get(3));
-                    System.out.println("clikeo");
-                     
                     listacircular.clear();
+                    PriorityQueue<Node> nodosordenados;
                     if (rbn.isSelected()) {
-                        for (int k = 0; k < celdas; k++) {
-                            listacircular.addLast(root.getChildren().get(saltosX(k, p)));
+                        nodosordenados = pqn(0);
+                        Set<Node> keys = mapa.keySet();
+                        for (Node nd : keys) {
+                            if (mapa.get(nd).get(0).equals(mapa.get(p).get(0))) {
+                                nodosordenados.add(nd);
+                            }
                         }
                     } else {
-                        for (int k = 0; k < celdas; k++) {
-                            listacircular.addLast(root.getChildren().get(saltosY(k, p)));
+                        nodosordenados = pqn(1);
+                        Set<Node> keys = mapa.keySet();
+                        for (Node nd : keys) {
+                            if (mapa.get(nd).get(1).equals(mapa.get(p).get(1))) {
+                                nodosordenados.add(nd);
+                            }
                         }
                     }
-                    for (int k = 0; k < celdas; k++) {
-                        System.out.println("posx: "+listacircular.get(k).getLayoutX()+" posy: "+listacircular.get(k).getLayoutY());
+                    while (!nodosordenados.isEmpty()) {
+                        Node nd = nodosordenados.poll();
+                        listacircular.addLast(nd);
+
                     }
-                    
+
                 });
                 //ordenando la matriz una vez modificada
                 p.setOnMouseReleased((MouseEvent t) -> {
-                    System.out.println("desclickeo");
                     if (rbn.isSelected()) {
                         for (int n = 0; n < celdas; n++) {
                             Node nd = listacircular.get(n);
                             nd.setLayoutY(posIniY(n));
                         }
                     } else {
-                        
+
                         for (int n = 0; n < celdas; n++) {
                             Node nd = listacircular.get(n);
                             nd.setLayoutX(posIniX(n));
-                            
+
                         }
+                    }
+                    for (int k = 0; k < celdas; k++) {
+                        Pane pane = (Pane) listacircular.get(k);
+                        Label lb = (Label) pane.getChildren().get(0);
                     }
                 });
                 //craendo la logica de movimiento
                 p.setOnMouseDragged((MouseEvent t) -> {
-                    System.out.println("deslizo");
                     if (rbn.isSelected()) {
-                        
+
                         for (int k = 0; k < celdas; k++) {
                             Node nd = listacircular.get(k);
                             nd.setLayoutY(-20 + mapa.get(nd).get(3) + (t.getSceneY() - mapa.get(p).get(3)));
@@ -142,11 +157,12 @@ public class FXMLController implements Initializable {
                         for (int k = 0; k < celdas; k++) {
                             Node nd = listacircular.get(k);
                             nd.setLayoutX(-20 + mapa.get(nd).get(2) + (t.getSceneX() - mapa.get(p).get(2)));
+                            System.out.println(p.getLayoutX());
                             if (Math.abs(mapa.get(p).get(2) - Math.abs(p.getLayoutX())) > 60) {
-//                                System.out.println("mapa.get(p).get(2)  "+mapa.get(p).get(2));
-//                                System.out.println("Math.abs(p.getLayoutX())  "+Math.abs(p.getLayoutX()));
-//                                System.out.println("mapa.get(p).get(2) - Math.abs(p.getLayoutX())   " +(mapa.get(p).get(2) - Math.abs(p.getLayoutX())));
-//                                System.out.println("Math.abs(mapa.get(p).get(2) - Math.abs(p.getLayoutX())) > 60  " +(Math.abs(mapa.get(p).get(2) - Math.abs(p.getLayoutX())) > 60));
+                                System.out.println("mapa.get(p).get(2)  " + mapa.get(p).get(2));
+                                System.out.println("Math.abs(p.getLayoutX())  " + Math.abs(p.getLayoutX()));
+                                System.out.println("mapa.get(p).get(2) - Math.abs(p.getLayoutX())   " + (mapa.get(p).get(2) - Math.abs(p.getLayoutX())));
+                                System.out.println("Math.abs(mapa.get(p).get(2) - Math.abs(p.getLayoutX())) > 60  " + (Math.abs(mapa.get(p).get(2) - Math.abs(p.getLayoutX())) > 60));
                                 listacircular.movehead(-1);
                                 for (int n = 0; n < celdas; n++) {
                                     Node nodoVis = listacircular.get(n);
@@ -160,19 +176,8 @@ public class FXMLController implements Initializable {
                 root.getChildren().add(p);
             }
         }
-        
+
         //
-    }
-
-    public int saltosX(int k, Pane p) {
-        
-        int saltos = mapa.get(p).get(0) * celdas + 1 + k;
-        return saltos;
-    }
-
-    public int saltosY(int k, Pane p) {
-        int saltos = k * celdas + mapa.get(p).get(1) + 1;
-        return saltos;
     }
 
     public Integer posIniX(int i) {
@@ -183,6 +188,18 @@ public class FXMLController implements Initializable {
     public Integer posIniY(int j) {
         Integer posIniY = offset + j * (size + gap);
         return posIniY;
+
+    }
+
+    public PriorityQueue<Node> pqn(int tipo) {
+        PriorityQueue<Node> coladenodos = new PriorityQueue<>((a, b) -> {
+            if (tipo == 0) {
+                return mapa.get(a).get(1).compareTo(mapa.get(b).get(1));
+            } else {
+                return mapa.get(a).get(0).compareTo(mapa.get(b).get(0));
+            }
+        });
+        return coladenodos;
 
     }
 

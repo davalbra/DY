@@ -1,5 +1,6 @@
 package Estructuras;
 
+import java.util.Comparator;
 import java.util.ListIterator;
 
 /**
@@ -37,5 +38,6 @@ public interface List<E> {
 
     @Override
     public String toString();
+
 
 }

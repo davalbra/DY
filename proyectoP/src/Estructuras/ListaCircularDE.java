@@ -1,5 +1,6 @@
 package Estructuras;
 
+import java.util.Comparator;
 import java.util.ListIterator;
 
 /**
@@ -14,10 +15,10 @@ public class ListaCircularDE<T> implements List<T> {
 
     @Override
     public boolean movehead(int numero) {
-        if(numero<0){
-        numero=size+numero;
+        if (numero < 0) {
+            numero = size + numero;
         }
-        if (isEmpty()||numero==0 ) {
+        if (isEmpty() || numero == 0) {
             return false;
         } else if (numero > size) {
             last = getNode(size % numero);
@@ -61,23 +62,6 @@ public class ListaCircularDE<T> implements List<T> {
         last.setPrevious(newNode);
         size++;
         return true;
-//        CNode<T> newNode = new CNode(data,2,2);
-//        if (isEmpty()) {
-//        } else if (size == 1) {
-//            newNode.setNext(last);
-//            newNode.setPrevious(last);
-//            last.setNext(newNode);
-//            last.setPrevious(newNode);
-//        } else {
-//            newNode.setNext(last.getNext());
-//            last.getNext().setPrevious(newNode);
-//            newNode.setPrevious(last);
-//            last.setNext(newNode);
-//
-//        }
-//        last = newNode;
-//        size++;
-        //return true;
 
     }
 
@@ -133,14 +117,14 @@ public class ListaCircularDE<T> implements List<T> {
     @Override
     public void clear() {
         last = null;
-        size=0;
+        size = 0;
     }
 
     @Override
     public void add(int index, T data) {
         if (index == 0) {
             addFirst(data);
-        } else if (index > 0 && index < size) {
+        } else if (index > 0 && index <= size) {
             CNode<T> aux = getNode(index);
             CNode<T> newNode = new CNode(data);
             aux.getPrevious().setNext(newNode);
