@@ -33,6 +33,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
@@ -52,15 +53,18 @@ public class FXMLController implements Initializable {
     @FXML
     private Button btnAC;
     @FXML
-    private RadioButton rbnD;
+    private VBox vBoxPalabra;
+    @FXML
+    private Button btnvp;
 
     static LinkedHashMap<Node, ArrayList<Integer>> mapa = new LinkedHashMap<>();
-    static int din = 3;
-    static int djn = 2;
+    static int din = 4;
+    static int djn = 3;
     static ListaCircularDE<Node> listacircular = new ListaCircularDE<Node>();
-    static int offset = 5;
+    static int offset = 100;
     static int gap = 10;
     static int size = 50;
+    static ListaCircularDE<Node> palabras = new ListaCircularDE<Node>();
 
     /**
      * Initializes the controller class.
@@ -71,8 +75,22 @@ public class FXMLController implements Initializable {
         Persona person = new Persona();
         logicaDeColumnas(btnAC, person);
 
-        root.setStyle("-fx-background-color: linear-gradient(to bottom, rgb(20,20,20), rgb(30,60,80));");
+        //root.setStyle("-fx-background-color: linear-gradient(to bottom, rgb(48,117,82),rgb(69,168,117), rgb(100,245,170));");
+        root.setStyle("-fx-background-color: linear-gradient(to bottom, rgb(11,75,217), rgb(129,12,248));");
+
         Random r = new Random();
+        Label lb = new Label("casa");
+        lb.setTextFill(Color.WHITE);
+        vBoxPalabra.getChildren().add(lb);
+        lb = new Label("perro");
+        lb.setTextFill(Color.WHITE);
+        vBoxPalabra.getChildren().add(lb);
+        lb = new Label("gato");
+        lb.setTextFill(Color.WHITE);
+        vBoxPalabra.getChildren().add(lb);
+        lb = new Label("pera");
+        lb.setTextFill(Color.WHITE);
+        vBoxPalabra.getChildren().add(lb);
 
         for (int i = 0; i < din; i++) {
             for (int j = 0; j < djn; j++) {
@@ -96,6 +114,8 @@ public class FXMLController implements Initializable {
         eventoPreseed(p, person);
         eventoreleased(p);
         eventoDragged(p);
+        eventomouseisup(p);
+        eventoMouseIsDown(p);
         root.getChildren().add(p);
     }
 
@@ -125,11 +145,6 @@ public class FXMLController implements Initializable {
             }
 
         });
-        if (rbnD.isSelected()) {
-            per.setDireccion("izq");
-        } else {
-            per.setDireccion("dere");
-        }
     }
 
     public PriorityQueue<Node> logicaCreaListasCirculares(Pane p, int dir, int bus) {
@@ -162,8 +177,8 @@ public class FXMLController implements Initializable {
         p.setMinSize(size, size);
         p.setOpacity(2);
         p.setStyle("-fx-border-color: white;");
-        Label l = new Label(String.valueOf(i) + String.valueOf(j));
-        //Label l = new Label(String.valueOf(letra));
+        //Label l = new Label(String.valueOf(i) + String.valueOf(j));
+        Label l = new Label(String.valueOf(letra));
         l.setTextFill(Color.WHITE);
         p.setLayoutX(posIniX(i));
         p.setLayoutY(posIniY(j));
@@ -176,44 +191,29 @@ public class FXMLController implements Initializable {
 
     public void eventoPreseed(Pane p, Persona person) {
         p.setOnMousePressed((MouseEvent t) -> {
-
             listacircular.clear();
             PriorityQueue<Node> nodosordenados;
             if (rbn.isSelected()) {
-                if (person.getCambiosDisponibles() < person.getCambiosRealizados()) {
-                    Set<Node> keys = mapa.keySet();
-                    generaEspacio(keys, p, 0);
-                    for (Node nd : keys) {
-                        if (mapa.get(p).get(0) < mapa.get(nd).get(0)) {
-                            nd.setLayoutX(posIniX(mapa.get(nd).get(0)));
-                            mapa.get(nd).set(2, posIniX(mapa.get(nd).get(0)));
-                        }
-                    }
-                    for (int i = 0; i < djn; i++) {
-                        logistica(new Random(),mapa.get(p).get(0) + 1, i, person);
-                    }
-                    din++;
-                    person.setCambiosRealizados();
-                }
+                insertandoPanes(person, p, 0, djn, false);
+
+//                if (person.getCambiosDisponibles() < person.getCambiosRealizados()) {
+//                    Set<Node> keys = mapa.keySet();
+//                    generaEspacio(keys, p, 0);
+//                    for (Node nd : keys) {
+//                        if (mapa.get(p).get(0) < mapa.get(nd).get(0)) {
+//                            redireccionarPanes(nd, false);
+//                        }
+//                    }
+//                    for (int i = 0; i < djn; i++) {
+//                        logistica(new Random(), mapa.get(p).get(0) + 1, i, person);
+//                    }
+//                    din++;
+//                    person.setCambiosRealizados();
+//                }
                 nodosordenados = logicaCreaListasCirculares(p, 0, 1);
             } else {
 
-                if (person.getCambiosDisponibles() < person.getCambiosRealizados()) {
-                    Set<Node> keys = mapa.keySet();
-                    generaEspacio(keys, p, 1);
-                    for (Node nd : keys) {
-                        if (mapa.get(p).get(1) < mapa.get(nd).get(1)) {
-                            nd.setLayoutY(posIniY(mapa.get(nd).get(1)));
-                            mapa.get(nd).set(3, posIniY(mapa.get(nd).get(1)));
-                        }
-                    }
-                    for (int i = 0; i < din; i++) {
-                        logistica(new Random(), i, mapa.get(p).get(1) + 1, person);
-                    }
-                    djn++;
-                    person.setCambiosRealizados();
-                }
-
+                insertandoPanes(person, p, 1, din, true);
                 nodosordenados = logicaCreaListasCirculares(p, 1, 0);
             }
             while (!nodosordenados.isEmpty()) {
@@ -224,7 +224,43 @@ public class FXMLController implements Initializable {
         );
     }
 
+    public void insertandoPanes(Persona person, Pane p, int b, int dn, boolean t) {
+        if (person.getCambiosDisponibles() < person.getCambiosRealizados()) {
+            Set<Node> keys = mapa.keySet();
+            generaEspacio(keys, p, b);
+            for (Node nd : keys) {
+                if (mapa.get(p).get(b) < mapa.get(nd).get(b)) {
+                    redireccionarPanes(nd, t);
+                }
+            }
+            for (int i = 0; i < dn; i++) {
+                if (t) {
+                    logistica(new Random(), i, mapa.get(p).get(b) + 1, person);
+                } else {
+                    logistica(new Random(), mapa.get(p).get(b) + 1, i, person);
+                }
+            }
+            if (t) {
+                djn++;
+            } else {
+                din++;
+            }
+            person.setCambiosRealizados();
+        }
+    }
+
+    public void redireccionarPanes(Node nd, boolean b) {
+        if (b) {
+            nd.setLayoutY(posIniY(mapa.get(nd).get(1)));
+            mapa.get(nd).set(3, posIniY(mapa.get(nd).get(1)));
+        } else {
+            nd.setLayoutX(posIniX(mapa.get(nd).get(0)));
+            mapa.get(nd).set(2, posIniX(mapa.get(nd).get(0)));
+        }
+    }
+
     public void generaEspacio(Set<Node> keys, Pane p, int log) {
+
         for (Node nd : keys) {
             if (mapa.get(p).get(log) < mapa.get(nd).get(log)) {
                 mapa.get(nd).set(log, mapa.get(nd).get(log) + 1);
@@ -272,6 +308,23 @@ public class FXMLController implements Initializable {
                     }
                 }
             }
+        });
+    }
+
+    public void eventomouseisup(Pane p) {
+        p.setOnMouseMoved((MouseEvent e) -> {
+
+            if (e.isDragDetect()) {
+                p.setStyle(" -fx-border-color: white; -fx-background-color: rgba(70,70,70,0.5)");
+            }
+
+        });
+
+    }
+
+    public void eventoMouseIsDown(Pane p) {
+        p.setOnMouseExited((MouseEvent d) -> {
+            p.setStyle(" -fx-border-color: white; -fx-background-color: rgba(70,70,70,0)");
         });
     }
 
