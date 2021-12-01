@@ -6,6 +6,7 @@
 package Controlador;
 
 import Estructuras.ListaCircularDE;
+import Modelo.Persona;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -26,6 +27,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -47,8 +49,14 @@ public class FXMLController implements Initializable {
     private AnchorPane root;
     @FXML
     private RadioButton rbn;
+    @FXML
+    private Button btnAC;
+    @FXML
+    private RadioButton rbnD;
+
     static LinkedHashMap<Node, ArrayList<Integer>> mapa = new LinkedHashMap<>();
-    static int celdas = 9;
+    static int din = 5;
+    static int djn = 4;
     static ListaCircularDE<Node> listacircular = new ListaCircularDE<Node>();
     static int offset = 5;
     static int gap = 10;
@@ -60,124 +68,36 @@ public class FXMLController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
+        Persona person = new Persona();
+        logicaDeColumnas(btnAC, person);
+
         root.setStyle("-fx-background-color: linear-gradient(to bottom, rgb(20,20,20), rgb(30,60,80));");
         GridPane grid = new GridPane();
         Random r = new Random();
 
-        for (int i = 0; i < celdas; i++) {
-            for (int j = 0; j < celdas; j++) {
-                char letra = (char) (r.nextInt(26) + 'A');
-                Pane p = new Pane();
-                p.setMinSize(size, size);
-                p.setOpacity(2);
-                p.setStyle("-fx-border-color: white;");
-                //Label l = new Label(String.valueOf(i) + String.valueOf(j));
-                Label l = new Label(String.valueOf(letra));
-                l.setTextFill(Color.WHITE);
-                p.setLayoutX(posIniX(i));
-                p.setLayoutY(posIniY(j));
-                l.setLayoutX(size - 30);
-                l.setLayoutY(size - 35);
-                l.setTextAlignment(TextAlignment.CENTER);
-                p.getChildren().add(l);
-                //agregando al array que necesita el mapa
-                ArrayList<Integer> lista = new ArrayList<>();
-                lista.add(i);
-                lista.add(j);
-                lista.add(posIniX(i));
-                lista.add(posIniY(j));
-                mapa.put(p, lista);
-                //fin
-
-                //creando la logica de las listas circulates
-                p.setOnMousePressed((MouseEvent t) -> {
-                    listacircular.clear();
-                    PriorityQueue<Node> nodosordenados;
-                    if (rbn.isSelected()) {
-                        nodosordenados = pqn(0);
-                        Set<Node> keys = mapa.keySet();
-                        for (Node nd : keys) {
-                            if (mapa.get(nd).get(0).equals(mapa.get(p).get(0))) {
-                                nodosordenados.add(nd);
-                            }
-                        }
-                    } else {
-                        nodosordenados = pqn(1);
-                        Set<Node> keys = mapa.keySet();
-                        for (Node nd : keys) {
-                            if (mapa.get(nd).get(1).equals(mapa.get(p).get(1))) {
-                                nodosordenados.add(nd);
-                            }
-                        }
-                    }
-                    while (!nodosordenados.isEmpty()) {
-                        Node nd = nodosordenados.poll();
-                        listacircular.addLast(nd);
-
-                    }
-
-                });
-                //ordenando la matriz una vez modificada
-                p.setOnMouseReleased((MouseEvent t) -> {
-                    if (rbn.isSelected()) {
-                        for (int n = 0; n < celdas; n++) {
-                            Node nd = listacircular.get(n);
-                            nd.setLayoutY(posIniY(n));
-                        }
-                    } else {
-
-                        for (int n = 0; n < celdas; n++) {
-                            Node nd = listacircular.get(n);
-                            nd.setLayoutX(posIniX(n));
-
-                        }
-                    }
-                    for (int k = 0; k < celdas; k++) {
-                        Pane pane = (Pane) listacircular.get(k);
-                        Label lb = (Label) pane.getChildren().get(0);
-                    }
-                });
-                //craendo la logica de movimiento
-                p.setOnMouseDragged((MouseEvent t) -> {
-                    if (rbn.isSelected()) {
-
-                        for (int k = 0; k < celdas; k++) {
-                            Node nd = listacircular.get(k);
-                            nd.setLayoutY(-20 + mapa.get(nd).get(3) + (t.getSceneY() - mapa.get(p).get(3)));
-                            if (Math.abs(mapa.get(p).get(3) - Math.abs(p.getLayoutY())) > 60) {
-                                listacircular.movehead(-1);
-                                for (int n = 0; n < celdas; n++) {
-                                    Node nodoVis = listacircular.get(n);
-                                    mapa.get(nodoVis).set(3, posIniY(n));
-                                    mapa.get(nodoVis).set(1, n);
-                                }
-                            }
-                        }
-                    } else {
-                        for (int k = 0; k < celdas; k++) {
-                            Node nd = listacircular.get(k);
-                            nd.setLayoutX(-20 + mapa.get(nd).get(2) + (t.getSceneX() - mapa.get(p).get(2)));
-                            System.out.println(p.getLayoutX());
-                            if (Math.abs(mapa.get(p).get(2) - Math.abs(p.getLayoutX())) > 60) {
-                                System.out.println("mapa.get(p).get(2)  " + mapa.get(p).get(2));
-                                System.out.println("Math.abs(p.getLayoutX())  " + Math.abs(p.getLayoutX()));
-                                System.out.println("mapa.get(p).get(2) - Math.abs(p.getLayoutX())   " + (mapa.get(p).get(2) - Math.abs(p.getLayoutX())));
-                                System.out.println("Math.abs(mapa.get(p).get(2) - Math.abs(p.getLayoutX())) > 60  " + (Math.abs(mapa.get(p).get(2) - Math.abs(p.getLayoutX())) > 60));
-                                listacircular.movehead(-1);
-                                for (int n = 0; n < celdas; n++) {
-                                    Node nodoVis = listacircular.get(n);
-                                    mapa.get(nodoVis).set(2, posIniX(n));
-                                    mapa.get(nodoVis).set(0, n);
-                                }
-                            }
-                        }
-                    }
-                });
-                root.getChildren().add(p);
+        for (int i = 0; i < din; i++) {
+            for (int j = 0; j < djn; j++) {
+                logistica(r, i, j, person);
             }
         }
 
         //
+    }
+
+    public void logistica(Random r, int i, int j, Persona person) {
+        char letra = (char) (r.nextInt(26) + 'A');
+        Pane p = creacionPane(letra, i, j);
+        //agregando al array que necesita el mapa
+        ArrayList<Integer> lista = new ArrayList<>();
+        lista.add(i);
+        lista.add(j);
+        lista.add(posIniX(i));
+        lista.add(posIniY(j));
+        mapa.put(p, lista);
+        eventoPreseed(p, person);
+        eventoreleased(p);
+        eventoDragged(p);
+        root.getChildren().add(p);
     }
 
     public Integer posIniX(int i) {
@@ -193,14 +113,148 @@ public class FXMLController implements Initializable {
 
     public PriorityQueue<Node> pqn(int tipo) {
         PriorityQueue<Node> coladenodos = new PriorityQueue<>((a, b) -> {
-            if (tipo == 0) {
-                return mapa.get(a).get(1).compareTo(mapa.get(b).get(1));
-            } else {
-                return mapa.get(a).get(0).compareTo(mapa.get(b).get(0));
-            }
+            return mapa.get(a).get(tipo).compareTo(mapa.get(b).get(tipo));
         });
         return coladenodos;
 
+    }
+
+    public void logicaDeColumnas(Button btn, Persona per) {
+        btn.setOnMouseClicked((t) -> {
+            System.out.println("entro aqui");
+            System.out.println(per.getCambiosDisponibles() == per.getCambiosRealizados() && per.getCambiosDisponibles() > 0);
+            if (per.getCambiosDisponibles() == per.getCambiosRealizados() && per.getCambiosDisponibles() > 0) {
+                System.out.println("entro en elbooleano");
+                per.setCambiosDisponibles();
+            }
+
+        });
+        if (rbnD.isSelected()) {
+            per.setDireccion("izq");
+        } else {
+            per.setDireccion("dere");
+        }
+    }
+
+    public PriorityQueue<Node> logicaCreaListasCirculares(Pane p, int dir, int bus) {
+        PriorityQueue<Node> nodosordenados = pqn(bus);
+        Set<Node> keys = mapa.keySet();
+        for (Node nd : keys) {
+            if (mapa.get(nd).get(dir).equals(mapa.get(p).get(dir))) {
+                nodosordenados.add(nd);
+            }
+        }
+        return nodosordenados;
+    }
+
+    public void logicadeanillo(int celdas, boolean bole, int coorde, int pos) {
+        if (bole) {
+            listacircular.movehead(-1);
+        } else {
+            listacircular.movehead(1);
+        }
+        for (int n = 0; n < celdas; n++) {
+            Node nodoVis = listacircular.get(n);
+            mapa.get(nodoVis).set(pos, posIniX(n));
+            mapa.get(nodoVis).set(coorde, n);
+        }
+
+    }
+
+    public Pane creacionPane(char letra, int i, int j) {
+        Pane p = new Pane();
+        p.setMinSize(size, size);
+        p.setOpacity(2);
+        p.setStyle("-fx-border-color: white;");
+        //Label l = new Label(String.valueOf(i) + String.valueOf(j));
+        Label l = new Label(String.valueOf(letra));
+        l.setTextFill(Color.WHITE);
+        p.setLayoutX(posIniX(i));
+        p.setLayoutY(posIniY(j));
+        l.setLayoutX(size - 30);
+        l.setLayoutY(size - 35);
+        l.setTextAlignment(TextAlignment.CENTER);
+        p.getChildren().add(l);
+        return p;
+    }
+
+    public void eventoPreseed(Pane p, Persona person) {
+        p.setOnMousePressed((MouseEvent t) -> {
+
+            listacircular.clear();
+            PriorityQueue<Node> nodosordenados;
+            if (rbn.isSelected()) {
+                nodosordenados = logicaCreaListasCirculares(p, 0, 1);
+            } else {
+                if (person.getCambiosDisponibles() < person.getCambiosRealizados()) {
+                    System.out.println("entro en el megaproceso suerte men");
+                    Set<Node> keys = mapa.keySet();
+                    for (Node nd : keys) {
+                        if (mapa.get(p).get(1) < mapa.get(nd).get(1)) {
+                            mapa.get(nd).set(1, mapa.get(nd).get(1) + 1);
+                        }
+
+                    }
+                    for (Node nd : keys) {
+                        nd.setLayoutY(posIniY(mapa.get(nd).get(1)));
+                        mapa.get(nd).set(3, posIniY(mapa.get(nd).get(1)));
+
+                    }
+                    person.setCambiosRealizados();
+                }
+
+                nodosordenados = logicaCreaListasCirculares(p, 1, 0);
+            }
+            while (!nodosordenados.isEmpty()) {
+                Node nd = nodosordenados.poll();
+                listacircular.addLast(nd);
+            }
+        }
+        );
+    }
+
+    public void eventoreleased(Pane p) {
+        p.setOnMouseReleased((MouseEvent t) -> {
+
+            if (rbn.isSelected()) {
+                for (int n = 0; n < djn; n++) {
+                    Node nd = listacircular.get(n);
+                    nd.setLayoutY(posIniY(n));
+                }
+            } else {
+
+                for (int n = 0; n < din; n++) {
+                    Node nd = listacircular.get(n);
+                    nd.setLayoutX(posIniX(n));
+
+                }
+            }
+        });
+    }
+
+    public void eventoDragged(Pane p) {
+        p.setOnMouseDragged((MouseEvent t) -> {
+            if (rbn.isSelected()) {
+
+                for (int k = 0; k < djn; k++) {
+                    Node nd = listacircular.get(k);
+                    nd.setLayoutY(-20 + mapa.get(nd).get(3) + (t.getSceneY() - mapa.get(p).get(3)));
+                    if (Math.abs(mapa.get(p).get(3) - Math.abs(p.getLayoutY())) > 60) {
+                        boolean bole = (mapa.get(p).get(3) - Math.abs(p.getLayoutY()) < 0);
+                        logicadeanillo(djn, bole, 1, 3);
+                    }
+                }
+            } else {
+                for (int k = 0; k < din; k++) {
+                    Node nd = listacircular.get(k);
+                    nd.setLayoutX(-20 + mapa.get(nd).get(2) + (t.getSceneX() - mapa.get(p).get(2)));
+                    if (Math.abs(mapa.get(p).get(2) - Math.abs(p.getLayoutX())) > 60) {
+                        boolean bole = (mapa.get(p).get(2) - Math.abs(p.getLayoutX()) < 0);
+                        logicadeanillo(din, bole, 0, 2);
+                    }
+                }
+            }
+        });
     }
 
 }
