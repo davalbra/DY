@@ -13,7 +13,7 @@ public class ListaCircularDE<T> implements List<T> {
     CNode<T> last;
     int size = 0;
 
-    @Override
+    
     public boolean movehead(int numero) {
         if (numero < 0) {
             numero = size + numero;
@@ -189,7 +189,7 @@ public class ListaCircularDE<T> implements List<T> {
         return aux;
     }
 
-    @Override
+    
     public ListIterator<T> listIterator() {
         if (!this.isEmpty()) {
             ListIterator<T> it = new ListIterator<>() {
