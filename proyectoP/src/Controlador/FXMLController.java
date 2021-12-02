@@ -6,7 +6,7 @@
 package Controlador;
 
 import Estructuras.ListaCircularDE;
-import Modelo.Persona;
+import Modelo.Player;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -72,7 +72,7 @@ public class FXMLController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-        Persona person = new Persona();
+        Player person = new Player();
         logicaDeColumnas(btnAC, person);
 
         //root.setStyle("-fx-background-color: linear-gradient(to bottom, rgb(48,117,82),rgb(69,168,117), rgb(100,245,170));");
@@ -101,7 +101,7 @@ public class FXMLController implements Initializable {
         //
     }
 
-    public void logistica(Random r, int i, int j, Persona person) {
+    public void logistica(Random r, int i, int j, Player person) {
         char letra = (char) (r.nextInt(26) + 'A');
         Pane p = creacionPane(letra, i, j);
         //agregando al array que necesita el mapa
@@ -139,7 +139,7 @@ public class FXMLController implements Initializable {
 
     }
 
-    public void logicaDeColumnas(Button btn, Persona per) {
+    public void logicaDeColumnas(Button btn, Player per) {
         btn.setOnMouseClicked((t) -> {
             if (per.getCambiosDisponibles() == per.getCambiosRealizados() && per.getCambiosDisponibles() > 0) {
                 per.setCambiosDisponibles();
@@ -189,7 +189,9 @@ public class FXMLController implements Initializable {
         p.getChildren().add(l);
         return p;
     }
-    public void eventoPreseed(Pane p, Persona person) {
+
+
+    public void eventoPreseed(Pane p, Player person) {
         p.setOnMousePressed((MouseEvent t) -> {
             listacircular.clear();
             PriorityQueue<Node> nodosordenados;
@@ -209,7 +211,7 @@ public class FXMLController implements Initializable {
         );
     }
 
-    public void insertandoPanes(Persona person, Pane p, int b, int dn, boolean t) {
+    public void insertandoPanes(Player person, Pane p, int b, int dn, boolean t) {
         if (person.getCambiosDisponibles() < person.getCambiosRealizados()) {
             Set<Node> keys = mapa.keySet();
             generaEspacio(keys, p, b);

@@ -10,7 +10,7 @@ import java.util.ListIterator;
  */
 public interface List<E> {
 
-    public boolean movehead(int numero);
+    
 
     public boolean addFirst(E e);
 
@@ -34,10 +34,8 @@ public interface List<E> {
 
     public E set(int index, E element);
 
-    public ListIterator<E> listIterator();
+    
 
-    @Override
-    public String toString();
-
+    
 
 }
