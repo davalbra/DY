@@ -1,4 +1,10 @@
 
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
 package Estructuras;
 
 import java.util.Iterator;
@@ -34,10 +40,7 @@ public class ArrayList<E> implements List<E> {
         capacity = capacity*2;
     }
 
-    @Override
-    public boolean movehead(int numero) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+
 
     @Override
     public boolean addFirst(E e) {
@@ -121,8 +124,9 @@ public class ArrayList<E> implements List<E> {
 
     @Override
     public E add(int index, E element) {
-        if(isEmpty()){
-            return (E) elements;
+      
+        if(isEmpty() && index < effectiveSize) {
+            elements[index] = element;
         }
         else if(isFull()){
             addCapacity();
@@ -131,9 +135,8 @@ public class ArrayList<E> implements List<E> {
             elements[i] = elements[i+1];
         }
         elements[index] = element;
-        effectiveSize++;
+        effectiveSize++; 
         return (E) elements;
-        
     }
 
     @Override
@@ -192,6 +195,7 @@ public class ArrayList<E> implements List<E> {
         sb.append("]");
         return sb.toString();
     }
+
     
     
     

@@ -1,5 +1,6 @@
 package Estructuras;
 
+import java.util.Comparator;
 import java.util.ListIterator;
 
 /**
@@ -9,7 +10,7 @@ import java.util.ListIterator;
  */
 public interface List<E> {
 
-    public boolean movehead(int numero);
+    
 
     public boolean addFirst(E e);
 
@@ -32,6 +33,7 @@ public interface List<E> {
     public E get(int index);
 
     public E set(int index, E element);
+
 
 
 }

@@ -34,14 +34,13 @@ public class NewMain extends Application {
      */
     public static void main(String[] args) {
         ListaCircularDE<String> listap = new ListaCircularDE<>();
-
-        for (int i = 0; i < 9; i++) {
-            listap.addLast(""+i);
+        int vueltas=3;
+        for (int i = 0; i < vueltas; i++) {
+            listap.add(i, ""+i);
         }
+        System.out.println(listap.toString());
+        
 
-        for (int i = 0; i < listap.size(); i++) {
-            //System.out.println(listap.get(i));
-        }
         launch();
     }
 
