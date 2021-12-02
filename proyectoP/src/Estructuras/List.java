@@ -25,7 +25,7 @@ public interface List<E> {
 
     public void clear();
 
-    public void add(int index, E element);
+    public E add(int index, E element);
 
     public E remove(int index);
 
@@ -33,9 +33,5 @@ public interface List<E> {
 
     public E set(int index, E element);
 
-    public ListIterator<E> listIterator();
-
-    @Override
-    public String toString();
 
 }
