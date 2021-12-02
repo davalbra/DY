@@ -56,6 +56,8 @@ public class FXMLController implements Initializable {
     private VBox vBoxPalabra;
     @FXML
     private Button btnvp;
+    @FXML
+    private VBox vBoxScore;
 
     static LinkedHashMap<Node, ArrayList<Integer>> mapa = new LinkedHashMap<>();
     static int din = 4;
@@ -91,6 +93,8 @@ public class FXMLController implements Initializable {
         lb = new Label("pera");
         lb.setTextFill(Color.WHITE);
         vBoxPalabra.getChildren().add(lb);
+        
+        
 
         for (int i = 0; i < din; i++) {
             for (int j = 0; j < djn; j++) {
@@ -143,6 +147,11 @@ public class FXMLController implements Initializable {
             if (per.getCambiosDisponibles() == per.getCambiosRealizados() && per.getCambiosDisponibles() > 0) {
                 per.setCambiosDisponibles();
             }
+            if(per.getCambiosDisponibles() == 0){
+                btn.setDisable(true);     
+            }
+            
+            
 
         });
     }
@@ -187,6 +196,14 @@ public class FXMLController implements Initializable {
         l.setTextAlignment(TextAlignment.CENTER);
         p.getChildren().add(l);
         return p;
+    }
+    
+    public VBox creacionScore(){
+        Player p1 = new Player();
+        Label labelScore = new Label("Puntaje");
+        Label puntaje = new Label(String.valueOf(p1.getPuntaje()));
+        vBoxScore.getChildren().add(labelScore);
+        return vBoxScore;
     }
 
     public void eventoPreseed(Pane p, Player person) {
@@ -327,5 +344,7 @@ public class FXMLController implements Initializable {
             p.setStyle(" -fx-border-color: white; -fx-background-color: rgba(70,70,70,0)");
         });
     }
+    
+    
 
 }
