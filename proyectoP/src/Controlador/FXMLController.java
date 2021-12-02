@@ -16,6 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -49,6 +50,8 @@ public class FXMLController implements Initializable {
     @FXML
     private AnchorPane root;
     @FXML
+    private AnchorPane root1;
+    @FXML
     private RadioButton rbn;
     @FXML
     private Button btnAC;
@@ -58,15 +61,18 @@ public class FXMLController implements Initializable {
     private Button btnvp;
     @FXML
     private VBox vBoxScore;
+    @FXML
+    private Button btnE;
 
     static LinkedHashMap<Node, ArrayList<Integer>> mapa = new LinkedHashMap<>();
     static int din = 4;
-    static int djn = 3;
+    static int djn = 5;
     static ListaCircularDE<Node> listacircular = new ListaCircularDE<Node>();
     static int offset = 100;
     static int gap = 10;
     static int size = 50;
     static ListaCircularDE<Node> palabras = new ListaCircularDE<Node>();
+    static boolean elimnar = false;
 
     /**
      * Initializes the controller class.
@@ -76,6 +82,7 @@ public class FXMLController implements Initializable {
 
         Player person = new Player();
         logicaDeColumnas(btnAC, person);
+        elimnarDimension(btnE);
 
         //root.setStyle("-fx-background-color: linear-gradient(to bottom, rgb(48,117,82),rgb(69,168,117), rgb(100,245,170));");
         root.setStyle("-fx-background-color: linear-gradient(to bottom, rgb(11,75,217), rgb(129,12,248));");
@@ -93,14 +100,57 @@ public class FXMLController implements Initializable {
         lb = new Label("pera");
         lb.setTextFill(Color.WHITE);
         vBoxPalabra.getChildren().add(lb);
-        
-        
 
         for (int i = 0; i < din; i++) {
             for (int j = 0; j < djn; j++) {
                 logistica(r, i, j, person);
             }
         }
+
+        System.out.println(root1.getChildren().size());
+        int contador = 0;
+        for (int i = 0; i < din; i++) {
+
+            for (int j = 0; j < djn; j++) {
+                ArrayList<Integer> lt = mapa.get(root1.getChildren().get(contador));
+                System.out.print(lt.get(0));
+                System.out.print(lt.get(1));
+                System.out.print(" ");
+                contador++;
+            }
+            System.out.println("");
+        }
+        System.out.println("**********************");
+        ArrayList<Integer> lt = mapa.get(root1.getChildren().get(0));
+        System.out.print(lt.get(0));
+        System.out.print(lt.get(1) + " ");
+        lt = mapa.get(root1.getChildren().get(1));
+        System.out.print(lt.get(0));
+        System.out.print(lt.get(1) + " ");
+        lt = mapa.get(root1.getChildren().get(2));
+        System.out.print(lt.get(0));
+        System.out.print(lt.get(1) + " ");
+        lt = mapa.get(root1.getChildren().get(3));
+        System.out.print(lt.get(0));
+        System.out.print(lt.get(1) + " ");
+        lt = mapa.get(root1.getChildren().get(4));
+        System.out.print(lt.get(0));
+        System.out.print(lt.get(1) + " ");
+        lt = mapa.get(root1.getChildren().get(5));
+        System.out.print(lt.get(0));
+        System.out.print(lt.get(1) + " ");
+        lt = mapa.get(root1.getChildren().get(6));
+        System.out.print(lt.get(0));
+        System.out.print(lt.get(1) + " ");
+        lt = mapa.get(root1.getChildren().get(7));
+        System.out.print(lt.get(0));
+        System.out.print(lt.get(1) + " ");
+        lt = mapa.get(root1.getChildren().get(8));
+        System.out.print(lt.get(0));
+        System.out.print(lt.get(1) + " ");
+        lt = mapa.get(root1.getChildren().get(9));
+        System.out.print(lt.get(0));
+        System.out.print(lt.get(1) + " ");
 
         //
     }
@@ -112,6 +162,7 @@ public class FXMLController implements Initializable {
         ArrayList<Integer> lista = new ArrayList<>();
         lista.add(i);
         lista.add(j);
+        System.out.println("i: " + i + " j: " + j);
         lista.add(posIniX(i));
         lista.add(posIniY(j));
         lista.add(1);
@@ -121,7 +172,8 @@ public class FXMLController implements Initializable {
         eventoDragged(p);
         eventomouseisup(p);
         eventoMouseIsDown(p);
-        root.getChildren().add(p);
+        validarPalabra(btnvp);
+        root1.getChildren().add(p);
     }
 
     public Integer posIniX(int i) {
@@ -148,11 +200,9 @@ public class FXMLController implements Initializable {
             if (per.getCambiosDisponibles() == per.getCambiosRealizados() && per.getCambiosDisponibles() > 0) {
                 per.setCambiosDisponibles();
             }
-            if(per.getCambiosDisponibles() == 0){
-                btn.setDisable(true);     
+            if (per.getCambiosDisponibles() == 0) {
+                btn.setDisable(true);
             }
-            
-            
 
         });
     }
@@ -187,8 +237,8 @@ public class FXMLController implements Initializable {
         p.setMinSize(size, size);
         p.setOpacity(2);
         p.setStyle("-fx-border-color: white;");
-        //Label l = new Label(String.valueOf(i) + String.valueOf(j));
-        Label l = new Label(String.valueOf(letra));
+        Label l = new Label(String.valueOf(i) + String.valueOf(j));
+        //Label l = new Label(String.valueOf(letra));
         l.setTextFill(Color.WHITE);
         p.setLayoutX(posIniX(i));
         p.setLayoutY(posIniY(j));
@@ -198,8 +248,8 @@ public class FXMLController implements Initializable {
         p.getChildren().add(l);
         return p;
     }
-    
-    public VBox creacionScore(){
+
+    public VBox creacionScore() {
         Player p1 = new Player();
         Label labelScore = new Label("Puntaje");
         Label puntaje = new Label(String.valueOf(p1.getPuntaje()));
@@ -207,25 +257,85 @@ public class FXMLController implements Initializable {
         return vBoxScore;
     }
 
-
     public void eventoPreseed(Pane p, Player person) {
         p.setOnMousePressed((MouseEvent t) -> {
+            mapa.get(p).set(4, 0);
+            p.setStyle(" -fx-border-color: white; -fx-background-color: #F5293B");
+            Label lb = (Label) p.getChildren().get(0);
+            palabras.addLast(p);
             listacircular.clear();
-            PriorityQueue<Node> nodosordenados;
+            PriorityQueue<Node> nodosordenados = new PriorityQueue<>();
             if (rbn.isSelected()) {
-                insertandoPanes(person, p, 0, djn, false);
-                nodosordenados = logicaCreaListasCirculares(p, 0, 1);
-            } else {
+                if (elimnar) {
+                    eliminarPanes(person, p, 0, false);
+                    elimnar = false;
+                } else {
+                    insertandoPanes(person, p, 0, djn, false);
+                    nodosordenados = logicaCreaListasCirculares(p, 0, 1);
+                }
 
-                insertandoPanes(person, p, 1, din, true);
-                nodosordenados = logicaCreaListasCirculares(p, 1, 0);
+            } else {
+                if (elimnar) {
+                    eliminarPanes(person, p, 1, true);
+                    elimnar = false;
+                } else {
+                    insertandoPanes(person, p, 1, din, true);
+                    nodosordenados = logicaCreaListasCirculares(p, 1, 0);
+                }
             }
+
             while (!nodosordenados.isEmpty()) {
                 Node nd = nodosordenados.poll();
                 listacircular.addLast(nd);
             }
         }
         );
+    }
+
+    public void eliminarPanes(Player person, Pane p, int log, boolean t) {
+        Set<Node> keys = mapa.keySet();
+        if (person.getCambiosDisponibles() != 0) {
+            int dimen = mapa.get(p).get(log);
+            Queue<Node> nodos = new LinkedList<>();
+            for (Node nd : keys) {
+                if (dimen == mapa.get(nd).get(log)) {
+                    nodos.add(nd);
+                }
+            }
+            while (!nodos.isEmpty()) {
+                Node n = nodos.poll();
+                root1.getChildren().remove(n);
+                mapa.remove(n);
+            }
+            if (t) {
+                djn--;
+            } else {
+                din--;
+            }
+
+            for (Node nd : keys) {
+                if (dimen < mapa.get(nd).get(log)) {
+                    mapa.get(nd).set(log, mapa.get(nd).get(log) - 1);
+                }
+            }
+            for (Node nd : keys) {
+                if (dimen <= mapa.get(nd).get(log)) {
+                    redireccionarPanes(nd, t);
+                }
+            }
+        }
+        person.setCambiosDisponibles();
+        person.setCambiosRealizados();
+        if (person.getCambiosDisponibles() == 0) {
+            btnE.setDisable(true);
+        }
+
+    }
+
+    public void elimnarDimension(Button btnE) {
+        btnE.setOnMouseClicked((MouseEvent e) -> {
+            elimnar = true;
+        });
     }
 
     public void insertandoPanes(Player person, Pane p, int b, int dn, boolean t) {
@@ -256,7 +366,7 @@ public class FXMLController implements Initializable {
     public void redireccionarPanes(Node nd, boolean b) {
         if (b) {
             nd.setLayoutY(posIniY(mapa.get(nd).get(1)));
-            mapa.get(nd).set(3, posIniY(mapa.get(nd).get(1)));
+
         } else {
             nd.setLayoutX(posIniX(mapa.get(nd).get(0)));
             mapa.get(nd).set(2, posIniX(mapa.get(nd).get(0)));
@@ -274,18 +384,18 @@ public class FXMLController implements Initializable {
 
     public void eventoreleased(Pane p) {
         p.setOnMouseReleased((MouseEvent t) -> {
+            if (!listacircular.isEmpty()) {
+                if (rbn.isSelected()) {
+                    for (int n = 0; n < djn; n++) {
+                        Node nd = listacircular.get(n);
+                        nd.setLayoutY(posIniY(n));
+                    }
+                } else {
+                    for (int n = 0; n < din; n++) {
+                        Node nd = listacircular.get(n);
+                        nd.setLayoutX(posIniX(n));
 
-            if (rbn.isSelected()) {
-                for (int n = 0; n < djn; n++) {
-                    Node nd = listacircular.get(n);
-                    nd.setLayoutY(posIniY(n));
-                }
-            } else {
-
-                for (int n = 0; n < din; n++) {
-                    Node nd = listacircular.get(n);
-                    nd.setLayoutX(posIniX(n));
-
+                    }
                 }
             }
         });
@@ -293,22 +403,38 @@ public class FXMLController implements Initializable {
 
     public void eventoDragged(Pane p) {
         p.setOnMouseDragged((MouseEvent t) -> {
-            if (rbn.isSelected()) {
-                for (int k = 0; k < djn; k++) {
-                    Node nd = listacircular.get(k);
-                    nd.setLayoutY(-20 + mapa.get(nd).get(3) + (t.getSceneY() - mapa.get(p).get(3)));
-                    if (Math.abs(mapa.get(p).get(3) - Math.abs(p.getLayoutY())) > 60) {
-                        boolean bole = (mapa.get(p).get(3) - Math.abs(p.getLayoutY()) < 0);
-                        logicadeanillo(djn, bole, 1, 3);
-                    }
+            if (!palabras.isEmpty()) {
+                ListIterator<Node> it = palabras.listIterator();
+                int contador = 0;
+                while (contador < palabras.size() && it.hasNext()) {
+                    Node nex = it.next();
+                    mapa.get(nex).set(4, 1);
+                    nex.setStyle(" -fx-border-color: white; -fx-background-color: rgba(70,70,70,0)");
+                    contador++;
                 }
-            } else {
-                for (int k = 0; k < din; k++) {
-                    Node nd = listacircular.get(k);
-                    nd.setLayoutX(-20 + mapa.get(nd).get(2) + (t.getSceneX() - mapa.get(p).get(2)));
-                    if (Math.abs(mapa.get(p).get(2) - Math.abs(p.getLayoutX())) > 60) {
-                        boolean bole = (mapa.get(p).get(2) - Math.abs(p.getLayoutX()) < 0);
-                        logicadeanillo(din, bole, 0, 2);
+            }
+            palabras.clear();
+            if (!listacircular.isEmpty()) {
+                if (rbn.isSelected()) {
+                    for (int k = 0; k < djn; k++) {
+                        Node nd = listacircular.get(k);
+                        System.out.println("vuletas: " + djn);
+                        System.out.println("lista: " + listacircular.size());
+                        System.out.println("i: " + mapa.get(nd).get(1) + " 3: " + mapa.get(nd).get(3));
+                        nd.setLayoutY(-20 + mapa.get(nd).get(3) + (t.getSceneY() - mapa.get(p).get(3)));
+                        if (Math.abs(mapa.get(p).get(3) - Math.abs(p.getLayoutY())) > 60) {
+                            boolean bole = (mapa.get(p).get(3) - Math.abs(p.getLayoutY()) < 0);
+                            logicadeanillo(djn, bole, 1, 3);
+                        }
+                    }
+                } else {
+                    for (int k = 0; k < din; k++) {
+                        Node nd = listacircular.get(k);
+                        nd.setLayoutX(-20 + mapa.get(nd).get(2) + (t.getSceneX() - mapa.get(p).get(2)));
+                        if (Math.abs(mapa.get(p).get(2) - Math.abs(p.getLayoutX())) > 60) {
+                            boolean bole = (mapa.get(p).get(2) - Math.abs(p.getLayoutX()) < 0);
+                            logicadeanillo(din, bole, 0, 2);
+                        }
                     }
                 }
             }
@@ -318,7 +444,7 @@ public class FXMLController implements Initializable {
     public void eventomouseisup(Pane p) {
         p.setOnMouseMoved((MouseEvent e) -> {
 
-            if (e.isDragDetect()) {
+            if (e.isDragDetect() && mapa.get(p).get(4) == 1) {
                 p.setStyle(" -fx-border-color: white; -fx-background-color: rgba(70,70,70,0.5)");
             }
 
@@ -328,10 +454,70 @@ public class FXMLController implements Initializable {
 
     public void eventoMouseIsDown(Pane p) {
         p.setOnMouseExited((MouseEvent d) -> {
-            p.setStyle(" -fx-border-color: white; -fx-background-color: rgba(70,70,70,0)");
+            if (mapa.get(p).get(4) == 1) {
+                p.setStyle(" -fx-border-color: white; -fx-background-color: rgba(70,70,70,0)");
+            }
         });
     }
-    
-    
 
+    public void validarPalabra(Button btnvp) {
+        btnvp.setOnMouseClicked((MouseEvent m) -> {
+            int contado = 0;
+            for (int i = 0; i < din; i++) {
+
+                for (int j = 0; j < djn; j++) {
+                    ArrayList<Integer> lb = mapa.get(root1.getChildren().get(contado));
+                    System.out.print(lb.get(0));
+                    System.out.print(lb.get(1));
+                    System.out.print(" ");
+                    contado++;
+                }
+                System.out.println("");
+            }
+            boolean di = true;
+            ListIterator<Node> it = palabras.listIterator();
+            int contador = 1;
+            System.out.println(palabras.size());
+            while (contador < palabras.size() && it.hasNext()) {
+                int i1 = mapa.get(it.next()).get(0);
+                int i2 = mapa.get(it.next()).get(0);
+
+                it.previous();
+                int j2 = mapa.get(it.previous()).get(1);
+                int j1 = mapa.get(it.previous()).get(1);
+
+                System.out.println("i1: " + i1);
+                System.out.println("j1: " + j1);
+                System.out.println("i2: " + i2);
+                System.out.println("j2: " + j2);
+
+                if (!(calculo(i1, i2) && calculo(j1, j2))) {
+                    System.out.println(calculo(i1, i2));
+                    System.out.println("j");
+                    System.out.println(calculo(j1, j2));
+                    di = false;
+                }
+                it.next();
+                it.next();
+                contador++;
+            }
+            if (di) {
+                System.out.println("si soy");
+            } else {
+                System.out.println("no soy");
+            }
+        }
+        );
+
+    }
+
+    public boolean calculo(int a, int b) {
+        System.out.println("Math.abs(a - b) <2: " + Math.abs(a - b) + " a: " + a + " b: " + b);
+        if (Math.abs(a - b) < 2) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
 }

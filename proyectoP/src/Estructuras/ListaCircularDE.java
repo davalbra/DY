@@ -193,7 +193,7 @@ public class ListaCircularDE<T> implements List<T> {
     public ListIterator<T> listIterator() {
         if (!this.isEmpty()) {
             ListIterator<T> it = new ListIterator<>() {
-                private CNode<T> traveler = last.getNext();
+                private CNode<T> traveler = last;
 
                 @Override
                 public boolean hasNext() {
