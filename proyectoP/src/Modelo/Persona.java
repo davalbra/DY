@@ -13,12 +13,10 @@ public class Persona {
     
     private int cambiosDisponibles;
     private int cambiosRealizados;
-    private String direccion;
 
     public Persona() {
         cambiosDisponibles=2;
         cambiosRealizados=2;
-        direccion="sinDireccion";
     }
 
     public int getCambiosDisponibles() {
@@ -37,14 +35,6 @@ public class Persona {
         this.cambiosRealizados--;
     }
 
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
-    
     
     
     

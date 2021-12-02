@@ -110,6 +110,7 @@ public class FXMLController implements Initializable {
         lista.add(j);
         lista.add(posIniX(i));
         lista.add(posIniY(j));
+        lista.add(1);
         mapa.put(p, lista);
         eventoPreseed(p, person);
         eventoreleased(p);
@@ -188,28 +189,12 @@ public class FXMLController implements Initializable {
         p.getChildren().add(l);
         return p;
     }
-
     public void eventoPreseed(Pane p, Persona person) {
         p.setOnMousePressed((MouseEvent t) -> {
             listacircular.clear();
             PriorityQueue<Node> nodosordenados;
             if (rbn.isSelected()) {
                 insertandoPanes(person, p, 0, djn, false);
-
-//                if (person.getCambiosDisponibles() < person.getCambiosRealizados()) {
-//                    Set<Node> keys = mapa.keySet();
-//                    generaEspacio(keys, p, 0);
-//                    for (Node nd : keys) {
-//                        if (mapa.get(p).get(0) < mapa.get(nd).get(0)) {
-//                            redireccionarPanes(nd, false);
-//                        }
-//                    }
-//                    for (int i = 0; i < djn; i++) {
-//                        logistica(new Random(), mapa.get(p).get(0) + 1, i, person);
-//                    }
-//                    din++;
-//                    person.setCambiosRealizados();
-//                }
                 nodosordenados = logicaCreaListasCirculares(p, 0, 1);
             } else {
 
