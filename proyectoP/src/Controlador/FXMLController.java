@@ -107,50 +107,6 @@ public class FXMLController implements Initializable {
             }
         }
 
-        System.out.println(root1.getChildren().size());
-        int contador = 0;
-        for (int i = 0; i < din; i++) {
-
-            for (int j = 0; j < djn; j++) {
-                ArrayList<Integer> lt = mapa.get(root1.getChildren().get(contador));
-                System.out.print(lt.get(0));
-                System.out.print(lt.get(1));
-                System.out.print(" ");
-                contador++;
-            }
-            System.out.println("");
-        }
-        System.out.println("**********************");
-        ArrayList<Integer> lt = mapa.get(root1.getChildren().get(0));
-        System.out.print(lt.get(0));
-        System.out.print(lt.get(1) + " ");
-        lt = mapa.get(root1.getChildren().get(1));
-        System.out.print(lt.get(0));
-        System.out.print(lt.get(1) + " ");
-        lt = mapa.get(root1.getChildren().get(2));
-        System.out.print(lt.get(0));
-        System.out.print(lt.get(1) + " ");
-        lt = mapa.get(root1.getChildren().get(3));
-        System.out.print(lt.get(0));
-        System.out.print(lt.get(1) + " ");
-        lt = mapa.get(root1.getChildren().get(4));
-        System.out.print(lt.get(0));
-        System.out.print(lt.get(1) + " ");
-        lt = mapa.get(root1.getChildren().get(5));
-        System.out.print(lt.get(0));
-        System.out.print(lt.get(1) + " ");
-        lt = mapa.get(root1.getChildren().get(6));
-        System.out.print(lt.get(0));
-        System.out.print(lt.get(1) + " ");
-        lt = mapa.get(root1.getChildren().get(7));
-        System.out.print(lt.get(0));
-        System.out.print(lt.get(1) + " ");
-        lt = mapa.get(root1.getChildren().get(8));
-        System.out.print(lt.get(0));
-        System.out.print(lt.get(1) + " ");
-        lt = mapa.get(root1.getChildren().get(9));
-        System.out.print(lt.get(0));
-        System.out.print(lt.get(1) + " ");
 
         //
     }
@@ -261,7 +217,6 @@ public class FXMLController implements Initializable {
         p.setOnMousePressed((MouseEvent t) -> {
             mapa.get(p).set(4, 0);
             p.setStyle(" -fx-border-color: white; -fx-background-color: #F5293B");
-            Label lb = (Label) p.getChildren().get(0);
             palabras.addLast(p);
             listacircular.clear();
             PriorityQueue<Node> nodosordenados = new PriorityQueue<>();

@@ -15,9 +15,11 @@ public class ListaCircularDE<T> implements List<T> {
 
     
     public boolean movehead(int numero) {
+        
         if (numero < 0) {
             numero = size + numero;
         }
+        
         if (isEmpty() || numero == 0) {
             return false;
         } else if (numero > size) {
@@ -193,7 +195,7 @@ public class ListaCircularDE<T> implements List<T> {
     public ListIterator<T> listIterator() {
         if (!this.isEmpty()) {
             ListIterator<T> it = new ListIterator<>() {
-                private CNode<T> traveler = last;
+                private CNode<T> traveler =last;
 
                 @Override
                 public boolean hasNext() {
