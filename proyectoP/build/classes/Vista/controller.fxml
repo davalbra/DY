@@ -19,10 +19,10 @@
       <TextField fx:id="campoNick" layoutX="280.0" layoutY="243.0" prefHeight="42.0" prefWidth="184.0">
          
       </TextField>
-      <TextField fx:id="campoFilas" layoutX="220.0" layoutY="314.0" prefHeight="33.0" prefWidth="53.0">
+      <TextField fx:id="campoFilas" layoutX="220.0" layoutY="314.0" prefHeight="33.0" prefWidth="53.0" text="6">
          
       </TextField>
-      <TextField fx:id="campoColumnas" layoutX="624.0" layoutY="314.0" prefHeight="33.0" prefWidth="53.0">
+      <TextField fx:id="campoColumnas" layoutX="624.0" layoutY="314.0" prefHeight="33.0" prefWidth="53.0" text="7">
          
       </TextField>
       <ImageView fx:id="titulo" fitHeight="122.0" fitWidth="538.0" layoutX="112.0" layoutY="76.0" pickOnBounds="true" preserveRatio="true">

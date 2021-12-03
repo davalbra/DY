@@ -78,12 +78,18 @@ public class FXMLController implements Initializable {
     static ListaCircularDE<Node> palabras = new ListaCircularDE<Node>();
     static boolean elimnar = false;
     static ListaCircularDE<Node> NodosPalabras = new ListaCircularDE<Node>();
+    static int puntaje = 0;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+//        controller controlador1=new controller();
+//        din=controlador1.obtenerColumna();
+//        
+//        djn=controlador1.obtenerFila();
+        
         txp.setText("0");
         Player person = new Player();
         logicaDeColumnas(btnAC, person);
@@ -362,12 +368,12 @@ public class FXMLController implements Initializable {
     public void eventoDragged(Pane p) {
         p.setOnMouseDragged((MouseEvent t) -> {
             if (!palabras.isEmpty()) {
-                System.out.println("nodos en palabra: "+palabras.size()+" nodos en NodosPalabras: "+NodosPalabras.size());
+                System.out.println("nodos en palabra: " + palabras.size() + " nodos en NodosPalabras: " + NodosPalabras.size());
                 for (int i = 0; i < palabras.size(); i++) {
                     for (int j = 0; j < NodosPalabras.size(); j++) {
-                     if(palabras.get(i)==NodosPalabras.get(j)){
-                     palabras.remove(i);
-                     }   
+                        if (palabras.get(i) == NodosPalabras.get(j)) {
+                            palabras.remove(i);
+                        }
                     }
                 }
                 ListIterator<Node> it = palabras.listIterator();
@@ -375,7 +381,7 @@ public class FXMLController implements Initializable {
                 while (contador < palabras.size() && it.hasNext()) {
                     Node nex = it.next();
                     mapa.get(nex).set(4, 1);
-                    
+
                     nex.setStyle(" -fx-border-color: white; -fx-background-color: rgba(70,70,70,0)");
                     contador++;
                 }
@@ -424,11 +430,11 @@ public class FXMLController implements Initializable {
 
     public void eventomouseisup(Pane p) {
         p.setOnMouseMoved((MouseEvent e) -> {
-            
-            boolean bandera=true;
+
+            boolean bandera = true;
             for (int i = 0; i < NodosPalabras.size(); i++) {
-                if(p==NodosPalabras.get(i)){
-                bandera= false;
+                if (p == NodosPalabras.get(i)) {
+                    bandera = false;
                 }
             }
             if (bandera && e.isDragDetect() && mapa.get(p).get(4) == 1) {
@@ -441,10 +447,10 @@ public class FXMLController implements Initializable {
 
     public void eventoMouseIsDown(Pane p) {
         p.setOnMouseExited((MouseEvent d) -> {
-            boolean bandera=true;
+            boolean bandera = true;
             for (int i = 0; i < NodosPalabras.size(); i++) {
-                if(p==NodosPalabras.get(i)){
-                bandera= false;
+                if (p == NodosPalabras.get(i)) {
+                    bandera = false;
                 }
             }
             if (bandera && mapa.get(p).get(4) == 1) {
@@ -485,13 +491,9 @@ public class FXMLController implements Initializable {
                     pal += ld.getText();
                     NodosPalabras.addLast(det);
                     cont++;
+                    puntaje++;
                 }
-                for (int i = 0; i < vBoxPalabra.getChildren().size(); i++) {
-                    Label lo = (Label) vBoxPalabra.getChildren().get(i);
-                    if (lo.getText().toLowerCase().equals(pal.toLowerCase())) {
-                        System.out.println("si contienen");
-                    }
-                }
+                txp.setText(puntaje+"");
 
             } else {
                 System.out.println("no soy");

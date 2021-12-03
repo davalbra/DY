@@ -33,6 +33,8 @@ public class controller {
     TextField campoFilas;
     @FXML
     TextField campoColumnas;
+
+    
     
     public void handleBtn1() throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/Vista/FXML.fxml"));
@@ -44,6 +46,7 @@ public class controller {
         Parent root = FXMLLoader.load(getClass().getResource("controller.fxml"));
         Stage window = (Stage) btnScene2.getScene().getWindow();
         window.setScene(new Scene(root, 500, 600));
+        
     }
     
 
@@ -53,9 +56,25 @@ public class controller {
     }
     
     
-    public int obtenerColumna(){
+     int obtenerColumna(){
         int columna = Integer.parseInt(campoColumnas.getText());
         return columna;
+    }
+
+    public TextField getCampoFilas() {
+        return campoFilas;
+    }
+
+    public void setCampoFilas(TextField campoFilas) {
+        this.campoFilas = campoFilas;
+    }
+
+    public TextField getCampoColumnas() {
+        return campoColumnas;
+    }
+
+    public void setCampoColumnas(TextField campoColumnas) {
+        this.campoColumnas = campoColumnas;
     }
 
 

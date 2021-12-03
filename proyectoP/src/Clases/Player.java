@@ -16,6 +16,8 @@ public class Player {
     private int errores;
     private final ArrayList<String> palabras_encontradas;
     private int cantidad_cambios;
+    private int din;
+    private int djn;
     
     //Constructor 
     public Player(){
@@ -49,6 +51,22 @@ public class Player {
     // Metodo que reduce la cantidad de intentos dado que cometio un error
     public void reducirIntentos(){
         errores--;
+    }
+
+    public int getDin() {
+        return din;
+    }
+
+    public void setDin(int din) {
+        this.din = din;
+    }
+
+    public int getDjn() {
+        return djn;
+    }
+
+    public void setDjn(int djn) {
+        this.djn = djn;
     }
     
    
