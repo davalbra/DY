@@ -50,7 +50,7 @@ public class NewMain extends Application {
     @Override
     public void start(Stage escenario) {
         try {
-            Parent p = FXMLLoader.load(getClass().getResource("/Vista/FXML.fxml"));
+            Parent p = FXMLLoader.load(getClass().getResource("/Vista/controller.fxml"));
             Scene sc = new Scene(p);
             escenario.setScene(sc);
             escenario.show();

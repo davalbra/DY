@@ -31,6 +31,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Border;
@@ -50,6 +51,8 @@ public class FXMLController implements Initializable {
 
     @FXML
     private AnchorPane root;
+    @FXML
+    private TextField txp;
     @FXML
     private AnchorPane root1;
     @FXML
@@ -81,7 +84,7 @@ public class FXMLController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+        txp.setText("0");
         Player person = new Player();
         logicaDeColumnas(btnAC, person);
         elimnarDimension(btnE);
@@ -421,8 +424,14 @@ public class FXMLController implements Initializable {
 
     public void eventomouseisup(Pane p) {
         p.setOnMouseMoved((MouseEvent e) -> {
-
-            if (e.isDragDetect() && mapa.get(p).get(4) == 1) {
+            
+            boolean bandera=true;
+            for (int i = 0; i < NodosPalabras.size(); i++) {
+                if(p==NodosPalabras.get(i)){
+                bandera= false;
+                }
+            }
+            if (bandera && e.isDragDetect() && mapa.get(p).get(4) == 1) {
                 p.setStyle(" -fx-border-color: white; -fx-background-color: rgba(70,70,70,0.5)");
             }
 
@@ -432,7 +441,13 @@ public class FXMLController implements Initializable {
 
     public void eventoMouseIsDown(Pane p) {
         p.setOnMouseExited((MouseEvent d) -> {
-            if (mapa.get(p).get(4) == 1) {
+            boolean bandera=true;
+            for (int i = 0; i < NodosPalabras.size(); i++) {
+                if(p==NodosPalabras.get(i)){
+                bandera= false;
+                }
+            }
+            if (bandera && mapa.get(p).get(4) == 1) {
                 p.setStyle(" -fx-border-color: white; -fx-background-color: rgba(70,70,70,0)");
             }
         });

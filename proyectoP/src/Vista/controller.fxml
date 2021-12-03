@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="textField" fx:id="ap" prefHeight="528.0" prefWidth="761.0" stylesheets="@../Controlador/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controlador.controller">
+   <children>
+      <Button fx:id="btn1" layoutX="273.0" layoutY="408.0" mnemonicParsing="false" onAction="#handleBtn1" prefHeight="38.0" prefWidth="103.0">
+         <graphic>
+            <ImageView fx:id="imagenstart" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Resources/boton.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
+      <TextField fx:id="campoNick" layoutX="280.0" layoutY="243.0" prefHeight="42.0" prefWidth="184.0">
+         
+      </TextField>
+      <TextField fx:id="campoFilas" layoutX="220.0" layoutY="314.0" prefHeight="33.0" prefWidth="53.0">
+         
+      </TextField>
+      <TextField fx:id="campoColumnas" layoutX="624.0" layoutY="314.0" prefHeight="33.0" prefWidth="53.0">
+         
+      </TextField>
+      <ImageView fx:id="titulo" fitHeight="122.0" fitWidth="538.0" layoutX="112.0" layoutY="76.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Resources/sopa.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="imagenNick" fitHeight="33.0" fitWidth="202.0" layoutX="271.0" layoutY="200.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Resources/nickname.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="imagenFilas" fitHeight="33.0" fitWidth="123.0" layoutX="104.0" layoutY="314.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Resources/filas.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="imagenColumnas" fitHeight="150.0" fitWidth="200.0" layoutX="406.0" layoutY="315.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Resources/columnas.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>
