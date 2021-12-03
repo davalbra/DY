@@ -15,6 +15,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.ListIterator;
+import java.util.Objects;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.ResourceBundle;
@@ -65,14 +66,15 @@ public class FXMLController implements Initializable {
     private Button btnE;
 
     static LinkedHashMap<Node, ArrayList<Integer>> mapa = new LinkedHashMap<>();
-    static int din = 4;
-    static int djn = 5;
+    static int din = 7;
+    static int djn = 6;
     static ListaCircularDE<Node> listacircular = new ListaCircularDE<Node>();
     static int offset = 100;
     static int gap = 10;
     static int size = 50;
     static ListaCircularDE<Node> palabras = new ListaCircularDE<Node>();
     static boolean elimnar = false;
+    static ListaCircularDE<Node> NodosPalabras = new ListaCircularDE<Node>();
 
     /**
      * Initializes the controller class.
@@ -88,16 +90,16 @@ public class FXMLController implements Initializable {
         root.setStyle("-fx-background-color: linear-gradient(to bottom, rgb(11,75,217), rgb(129,12,248));");
 
         Random r = new Random();
-        Label lb = new Label("casa");
+        Label lb = new Label("ca");
         lb.setTextFill(Color.WHITE);
         vBoxPalabra.getChildren().add(lb);
-        lb = new Label("perro");
+        lb = new Label("re");
         lb.setTextFill(Color.WHITE);
         vBoxPalabra.getChildren().add(lb);
-        lb = new Label("gato");
+        lb = new Label("de");
         lb.setTextFill(Color.WHITE);
         vBoxPalabra.getChildren().add(lb);
-        lb = new Label("pera");
+        lb = new Label("pe");
         lb.setTextFill(Color.WHITE);
         vBoxPalabra.getChildren().add(lb);
 
@@ -106,7 +108,6 @@ public class FXMLController implements Initializable {
                 logistica(r, i, j, person);
             }
         }
-
 
         //
     }
@@ -118,7 +119,6 @@ public class FXMLController implements Initializable {
         ArrayList<Integer> lista = new ArrayList<>();
         lista.add(i);
         lista.add(j);
-        System.out.println("i: " + i + " j: " + j);
         lista.add(posIniX(i));
         lista.add(posIniY(j));
         lista.add(1);
@@ -193,8 +193,8 @@ public class FXMLController implements Initializable {
         p.setMinSize(size, size);
         p.setOpacity(2);
         p.setStyle("-fx-border-color: white;");
-        Label l = new Label(String.valueOf(i) + String.valueOf(j));
-        //Label l = new Label(String.valueOf(letra));
+        //Label l = new Label(String.valueOf(i) + String.valueOf(j));
+        Label l = new Label(String.valueOf(letra));
         l.setTextFill(Color.WHITE);
         p.setLayoutX(posIniX(i));
         p.setLayoutY(posIniY(j));
@@ -359,11 +359,20 @@ public class FXMLController implements Initializable {
     public void eventoDragged(Pane p) {
         p.setOnMouseDragged((MouseEvent t) -> {
             if (!palabras.isEmpty()) {
+                System.out.println("nodos en palabra: "+palabras.size()+" nodos en NodosPalabras: "+NodosPalabras.size());
+                for (int i = 0; i < palabras.size(); i++) {
+                    for (int j = 0; j < NodosPalabras.size(); j++) {
+                     if(palabras.get(i)==NodosPalabras.get(j)){
+                     palabras.remove(i);
+                     }   
+                    }
+                }
                 ListIterator<Node> it = palabras.listIterator();
                 int contador = 0;
                 while (contador < palabras.size() && it.hasNext()) {
                     Node nex = it.next();
                     mapa.get(nex).set(4, 1);
+                    
                     nex.setStyle(" -fx-border-color: white; -fx-background-color: rgba(70,70,70,0)");
                     contador++;
                 }
@@ -371,24 +380,38 @@ public class FXMLController implements Initializable {
             palabras.clear();
             if (!listacircular.isEmpty()) {
                 if (rbn.isSelected()) {
-                    for (int k = 0; k < djn; k++) {
-                        Node nd = listacircular.get(k);
-                        System.out.println("vuletas: " + djn);
-                        System.out.println("lista: " + listacircular.size());
-                        System.out.println("i: " + mapa.get(nd).get(1) + " 3: " + mapa.get(nd).get(3));
-                        nd.setLayoutY(-20 + mapa.get(nd).get(3) + (t.getSceneY() - mapa.get(p).get(3)));
-                        if (Math.abs(mapa.get(p).get(3) - Math.abs(p.getLayoutY())) > 60) {
-                            boolean bole = (mapa.get(p).get(3) - Math.abs(p.getLayoutY()) < 0);
-                            logicadeanillo(djn, bole, 1, 3);
+                    boolean permitir = true;
+                    for (int n = 0; n < NodosPalabras.size(); n++) {
+                        if (Objects.equals(mapa.get(p).get(0), mapa.get(NodosPalabras.get(n)).get(0))) {
+                            permitir = false;
+                        }
+                    }
+                    if (permitir) {
+                        for (int k = 0; k < djn; k++) {
+                            Node nd = listacircular.get(k);
+                            nd.setLayoutY(-20 + mapa.get(nd).get(3) + (t.getSceneY() - mapa.get(p).get(3)));
+                            if (Math.abs(mapa.get(p).get(3) - Math.abs(p.getLayoutY())) > 60) {
+                                boolean bole = (mapa.get(p).get(3) - Math.abs(p.getLayoutY()) < 0);
+                                logicadeanillo(djn, bole, 1, 3);
+                            }
                         }
                     }
                 } else {
-                    for (int k = 0; k < din; k++) {
-                        Node nd = listacircular.get(k);
-                        nd.setLayoutX(-20 + mapa.get(nd).get(2) + (t.getSceneX() - mapa.get(p).get(2)));
-                        if (Math.abs(mapa.get(p).get(2) - Math.abs(p.getLayoutX())) > 60) {
-                            boolean bole = (mapa.get(p).get(2) - Math.abs(p.getLayoutX()) < 0);
-                            logicadeanillo(din, bole, 0, 2);
+                    boolean permitir = true;
+                    for (int n = 0; n < NodosPalabras.size(); n++) {
+                        if (Objects.equals(mapa.get(p).get(1), mapa.get(NodosPalabras.get(n)).get(1))) {
+                            permitir = false;
+                        }
+                    }
+                    if (permitir) {
+                        for (int k = 0; k < din; k++) {
+
+                            Node nd = listacircular.get(k);
+                            nd.setLayoutX(-20 + mapa.get(nd).get(2) + (t.getSceneX() - mapa.get(p).get(2)));
+                            if (Math.abs(mapa.get(p).get(2) - Math.abs(p.getLayoutX())) > 60) {
+                                boolean bole = (mapa.get(p).get(2) - Math.abs(p.getLayoutX()) < 0);
+                                logicadeanillo(din, bole, 0, 2);
+                            }
                         }
                     }
                 }
@@ -417,22 +440,9 @@ public class FXMLController implements Initializable {
 
     public void validarPalabra(Button btnvp) {
         btnvp.setOnMouseClicked((MouseEvent m) -> {
-            int contado = 0;
-            for (int i = 0; i < din; i++) {
-
-                for (int j = 0; j < djn; j++) {
-                    ArrayList<Integer> lb = mapa.get(root1.getChildren().get(contado));
-                    System.out.print(lb.get(0));
-                    System.out.print(lb.get(1));
-                    System.out.print(" ");
-                    contado++;
-                }
-                System.out.println("");
-            }
             boolean di = true;
             ListIterator<Node> it = palabras.listIterator();
             int contador = 1;
-            System.out.println(palabras.size());
             while (contador < palabras.size() && it.hasNext()) {
                 int i1 = mapa.get(it.next()).get(0);
                 int i2 = mapa.get(it.next()).get(0);
@@ -440,16 +450,7 @@ public class FXMLController implements Initializable {
                 it.previous();
                 int j2 = mapa.get(it.previous()).get(1);
                 int j1 = mapa.get(it.previous()).get(1);
-
-                System.out.println("i1: " + i1);
-                System.out.println("j1: " + j1);
-                System.out.println("i2: " + i2);
-                System.out.println("j2: " + j2);
-
                 if (!(calculo(i1, i2) && calculo(j1, j2))) {
-                    System.out.println(calculo(i1, i2));
-                    System.out.println("j");
-                    System.out.println(calculo(j1, j2));
                     di = false;
                 }
                 it.next();
@@ -458,6 +459,25 @@ public class FXMLController implements Initializable {
             }
             if (di) {
                 System.out.println("si soy");
+                ListIterator<Node> dt = palabras.listIterator();
+                String pal = "";
+                int cont = 0;
+                while (cont < palabras.size() && dt.hasNext()) {
+                    Node det = dt.next();
+                    System.out.println("d");
+                    Pane pt = (Pane) det;
+                    Label ld = (Label) pt.getChildren().get(0);
+                    pal += ld.getText();
+                    NodosPalabras.addLast(det);
+                    cont++;
+                }
+                for (int i = 0; i < vBoxPalabra.getChildren().size(); i++) {
+                    Label lo = (Label) vBoxPalabra.getChildren().get(i);
+                    if (lo.getText().toLowerCase().equals(pal.toLowerCase())) {
+                        System.out.println("si contienen");
+                    }
+                }
+
             } else {
                 System.out.println("no soy");
             }
@@ -467,7 +487,6 @@ public class FXMLController implements Initializable {
     }
 
     public boolean calculo(int a, int b) {
-        System.out.println("Math.abs(a - b) <2: " + Math.abs(a - b) + " a: " + a + " b: " + b);
         if (Math.abs(a - b) < 2) {
             return true;
         } else {
